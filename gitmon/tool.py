@@ -10,7 +10,6 @@ def process_work_subject(work_subject):
     """Check git repository for remote updates and run a command
     """
     assert 'path' in work_subject
-    assert 'command' in work_subject
     remote_name = work_subject.get('remote', 'origin')
     branch_name = work_subject.get('branch', 'main')
     use_force = int(work_subject.get('force', '0'))
@@ -49,7 +48,7 @@ def process_work_subject(work_subject):
             local_ref = repo.create_branch(branch_name, commit)
         repo.set_head(local_ref.name)
 
-    if run_command:
+    if run_command and work_subject.get('command'):
         subprocess.call(work_subject['command'], shell=True)
 
 
