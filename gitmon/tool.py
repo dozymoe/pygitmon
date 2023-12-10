@@ -37,13 +37,17 @@ def process_work_subject(work_subject):
     else:
         # Update working files
         _logger.info("Updating workspace %s", work_path)
-        remote_id = repo.lookup_reference(
-                f'refs/remotes/{remote_name}/{branch_name}')\
+        remote_id = repo.lookup_branch(f'{remote_name}/{branch_name}',
+                pygit2.GIT_BRANCH_REMOTE)\
                 .target
-        repo.checkout_tree(repo.get(remote_id))
-        local_ref = repo.lookup_reference(f'refs/heads/{branch_name}')
-        local_ref.set_target(remote_id)
-        repo.head.set_target(remote_id)
+        commit = repo.get(remote_id)
+        repo.checkout_tree(commit)
+        try:
+            local_ref = repo.lookup_branch(branch_name)
+            local_ref.set_target(remote_id)
+        except KeyError:
+            local_ref = repo.create_branch(branch_name, commit)
+        repo.set_head(local_ref.name)
 
     if run_command:
         subprocess.call(work_subject['command'], shell=True)
