@@ -25,7 +25,7 @@ In the next example we have three additional fields:
       | remote: origin
       | branch: main
       | force: 1
-      | repo_url: git://git@github.com/username/company-website
+      | repo_url: git@github.com:username/company-website
       | ssh_keyfile: ~/.ssh/company-key
       | ssh_keyfile_password: company-password
 

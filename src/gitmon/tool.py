@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 import subprocess
-from urllib import parse as urlparse
+from urllib.parse import urlparse
 #-
 import pygit2
 
@@ -101,7 +101,7 @@ def fetch_remote(remote, branch_name, options):
     """Fetch from upstream, return last commit in branch
     """
     scheme, username = extract_info_from_url(remote.url)
-    if not scheme and 'ssh_keyfile' in options:
+    if scheme == 'ssh' and 'ssh_keyfile' in options:
         credentials = pygit2.Keypair(username, f"{options['ssh_keyfile']}.pub",
                 options['ssh_keyfile'], options.get('ssh_keyfile_pass') or '')
         callbacks = pygit2.RemoteCallbacks(credentials=credentials)
@@ -144,9 +144,7 @@ def update_work_directory(repo, remote_name, branch_name):
 def extract_info_from_url(url, default='git'):
     """Extract username from github url
     """
-    urlparts = urlparse.urlsplit(url)
-    netloc = urlparts.netloc.split('@', 1)
-    if len(netloc) <= 1:
-        # Didn't find the credentials in the netloc
-        return (urlparts.scheme, default)
-    return (urlparts.scheme, netloc[0].split(':', 1)[0])
+    urlparts = urlparse(url)
+    if not urlparts.scheme:
+        urlparts = urlparse(f'ssh://{url}')
+    return (urlparts.scheme, urlparts.username or default)
