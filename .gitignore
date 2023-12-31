@@ -1,3 +1,7 @@
+/dist/
+/tmp/
+
+
 ## git
 
 *.orig
@@ -6,6 +10,8 @@
 ## python
 
 *.pyc
+*.egg-info/
+/venv/
 
 
 ## vim

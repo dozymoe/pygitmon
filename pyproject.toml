@@ -1,0 +1,28 @@
+[project]
+name = "pygitmon"
+version = "0.0.1"
+authors = [
+  { name="Fahri Reza", email="dozymoe@gmail.com" },
+]
+description = "Update git working directory and run commands"
+readme = "README.rst"
+dependencies = [
+    "pygit2",
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+license = {file = "LICENSE"}
+
+
+[project.urls]
+Homepage = "https://github.com/dozymoe/pygitmon"
+Issues = "https://github.com/dozymoe/pygitmon/issues"
+
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
